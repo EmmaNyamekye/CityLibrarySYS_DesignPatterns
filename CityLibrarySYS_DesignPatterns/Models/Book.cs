@@ -3,15 +3,14 @@ namespace CityLibrarySYS_DesignPatterns.Models
 {
     public class Book
     {
-        public string bookID { get; set; } = "";
-        public string ISBN { get; set; } = "";
-        public string title { get; set; } = "";
-        public string author { get; set; } = "";
-        public string genre { get; set; } = "";
-        public DateTime pubblication { get; set; } = DateTime.Now;
-        public string description { get; set; } = "";
-        public int LibraryID { get; set; }
-        public char status { get; set; }
+        public int BookID { get; set; } = 0;
+        public string ISBN { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Author { get; set; } = string.Empty;
+        public string Genre { get; set; } = string.Empty;
+        public DateTime Pubblication { get; set; } = DateTime.Now;
+        public string Description { get; set; } = string.Empty;
+        public char Status { get; set; } = 'A';
 
 
     }
