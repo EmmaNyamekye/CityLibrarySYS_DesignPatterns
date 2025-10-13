@@ -1,8 +1,11 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace CityLibrarySYS_DesignPatterns.Models
 {
     public class Book
     {
+        [Key]
         public int BookID { get; set; } = 0;
         public string ISBN { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CityLibrarySYS_DesignPatterns.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityLibrarySYS_DesignPatterns.Data
 {
@@ -8,9 +9,10 @@ namespace CityLibrarySYS_DesignPatterns.Data
         {
         }
 
-        /*public DbSet<Book> Products { get; set; }
-        <Book> is your table*/
+        public DbSet<Member> Members { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Loan> Loans { get; set; }
+        public DbSet<LoanItem> LoanItems { get; set; }
     }
-
-    /*https://medium.com/@ravitejherwatta/a-step-by-step-process-to-set-up-a-database-connection-in-asp-net-core-mvc-a03ac8b7cc04*/
 }

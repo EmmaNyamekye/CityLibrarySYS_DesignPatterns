@@ -1,7 +1,10 @@
-﻿namespace CityLibrarySYS_DesignPatterns.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CityLibrarySYS_DesignPatterns.Models
 {
     public class LoanItem
     {
+        [Key]
         public int BookID { get; set; } = 0;
         public string LoanID { get; set; } = string.Empty;
         public DateTime LoanStart { get; set; } = DateTime.Now;
