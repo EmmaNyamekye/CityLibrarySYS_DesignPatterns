@@ -5,10 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-// Register your DbContext
 builder.Services.AddDbContext<LibraryDatabaseContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CityLibraryDB")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
 var app = builder.Build();
 
