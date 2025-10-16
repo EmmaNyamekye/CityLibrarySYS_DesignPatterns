@@ -1,6 +1,7 @@
 ﻿using CityLibrarySYS_DesignPatterns.Data;
 using CityLibrarySYS_DesignPatterns.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityLibrarySYS_DesignPatterns.Controllers
 {
@@ -12,9 +13,9 @@ namespace CityLibrarySYS_DesignPatterns.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var book = _context.Books.ToList();
+            var book = await _context.Books.ToListAsync();
             return View(book);
         }
 
@@ -24,12 +25,12 @@ namespace CityLibrarySYS_DesignPatterns.Controllers
         }
 
         [HttpPost] 
-        public IActionResult Create(Book book)
+        public async Task<IActionResult> Create(Book book)
         {
             if (ModelState.IsValid)
             {
                 _context.Books.Add(book);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction("index");
             }
