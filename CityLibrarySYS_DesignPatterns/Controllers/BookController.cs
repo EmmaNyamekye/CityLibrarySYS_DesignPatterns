@@ -1,4 +1,5 @@
 ﻿using CityLibrarySYS_DesignPatterns.Data;
+using CityLibrarySYS_DesignPatterns.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityLibrarySYS_DesignPatterns.Controllers
@@ -22,11 +23,18 @@ namespace CityLibrarySYS_DesignPatterns.Controllers
             return View();
         }
 
-        /*[HttpPost]
-        public IActionResult Create(Books book)
+        [HttpPost] 
+        public IActionResult Create(Book book)
         {
-            return View();
-        }*/
+            if (ModelState.IsValid)
+            {
+                _context.Books.Add(book);
+                _context.SaveChanges();
+
+                return RedirectToAction("index");
+            }
+            return View(book);
+        }
 
     }
 }
