@@ -1,22 +1,22 @@
-﻿-- CityLibrarySYS_DesignPatterns - Database Script
+﻿EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL';
+GO
 
--- Drop All Tables
 DROP TABLE LoanItems;
 DROP TABLE Loans;
 DROP TABLE Books;
 DROP TABLE Genres;
 DROP TABLE Members;
 DROP TABLE Counties;
+GO
 
--- Create Counties Table
+-- CREATE COUNTIES TABLE AND INSERT DATA
 CREATE TABLE Counties
 (
-    CountyCode VARCHAR(15),
-    Description VARCHAR(15) NOT NULL,
-    CONSTRAINT pk_CountyCode PRIMARY KEY(CountyCode)
+    CountyCode VARCHAR(15),
+    Description VARCHAR(15) NOT NULL,
+    CONSTRAINT pk_CountyCode PRIMARY KEY(CountyCode)
 );
 
--- Insert into Counties table
 INSERT INTO Counties VALUES ('Antrim', 'Co. Antrim');
 INSERT INTO Counties VALUES ('Armagh', 'Co. Armagh');
 INSERT INTO Counties VALUES ('Cavan', 'Co. Cavan');
@@ -48,83 +48,79 @@ INSERT INTO Counties VALUES ('Galway', 'Co. Galway');
 INSERT INTO Counties VALUES ('Leitrim', 'Co. Leitrim');
 INSERT INTO Counties VALUES ('Roscommon', 'Co. Roscommon');
 
--- Create Members Table (updated to use CountyCode)
+-- CREATE MEMBERS TABLE AND INSERT DATA
 CREATE TABLE Members
 (
-    MemberID INT PRIMARY KEY,
-    Forename VARCHAR(20) NOT NULL,
-    Surname VARCHAR(20) NOT NULL,
-    DoB DATE NOT NULL,
-    Street VARCHAR(25) NOT NULL,
-    Town VARCHAR(15) NOT NULL,
-    CountyCode VARCHAR(15) NOT NULL,
-    Eircode CHAR(7) NOT NULL,
-    Phone VARCHAR(15) NOT NULL,
-    Email VARCHAR(40) NOT NULL,
-    CONSTRAINT fk_Member_County FOREIGN KEY (CountyCode)
-        REFERENCES Counties(CountyCode)
+    MemberID INT PRIMARY KEY,
+    Forename VARCHAR(20) NOT NULL,
+    Surname VARCHAR(20) NOT NULL,
+    DoB DATE NOT NULL,
+    Street VARCHAR(25) NOT NULL,
+    Town VARCHAR(15) NOT NULL,
+    CountyCode VARCHAR(15) NOT NULL,
+    Eircode CHAR(7) NOT NULL,
+    Phone VARCHAR(15) NOT NULL,
+    Email VARCHAR(40) NOT NULL,
+    Status CHAR(1) DEFAULT 'A' CHECK (Status IN ('A', 'I')) NOT NULL,
+    CONSTRAINT fk_Member_County FOREIGN KEY (CountyCode)
+        REFERENCES Counties(CountyCode)
 );
 
--- Insert Members
-INSERT INTO Members VALUES(0, 'Sophia', 'Loren', '1956-05-15', 'Galway Street', 'Galway City', 'Galway', 'A65F4E2', '+353612345678', 'not.sophia.loren@example.com');
-INSERT INTO Members VALUES(1, 'Marco', 'Rossi', '1966-06-23', 'Tenth Street', 'Limerick City', 'Limerick', 'A65F4E1', '+353687654321', 'marcorossin1@example.com');
-INSERT INTO Members VALUES(2, 'Luigi', 'Bros', '1986-09-06', 'Bros Street', 'Shannon', 'Clare', 'A65F4E3', '+353611223344', 'luigibros@example.com');
-INSERT INTO Members VALUES(3, 'Mario', 'Bros', '1956-02-25', 'Clare Street', 'Kilrush', 'Clare', 'A65F4E7', '+353611113333', 'mariobros1@example.com');
-INSERT INTO Members VALUES(4, 'Steven', 'Universe', '2009-04-22', 'Cork Street', 'Shannon', 'Clare', 'A65F4E4', '+353212345678', 'steven.universe@example.com');
-INSERT INTO Members VALUES(5, 'Emma', 'Smith', '1978-03-10', 'Main Street', 'Galway City', 'Galway', 'A65F4E8', '+353619876543', 'emma.smith@example.com');
-INSERT INTO Members VALUES(6, 'John', 'Doe', '1985-08-05', 'High Street', 'Limerick City', 'Limerick', 'A65F4E9', '+353614321098', 'john.doe@example.com');
-INSERT INTO Members VALUES(7, 'Sarah', 'Johnson', '1990-11-20', 'Oak Avenue', 'Galway City', 'Galway', 'A65F4E1', '+353615678901', 'sarah.johnson@example.com');
-INSERT INTO Members VALUES(8, 'Michael', 'Brown', '1980-09-15', 'Pine Road', 'Limerick City', 'Limerick', 'A65F4E7', '+353611234567', 'michael.brown@example.com');
-INSERT INTO Members VALUES(9, 'Emily', 'Taylor', '1995-04-02', 'Cedar Lane', 'Kilrush', 'Clare', 'A65F4E4', '+353617890123', 'emily.taylor@example.com');
+INSERT INTO Members (MemberID, Forename, Surname, DoB, Street, Town, CountyCode, Eircode, Phone, Email, Status)
+VALUES
+(0, 'Sophia', 'Loren', '1956-05-15', 'Galway Street', 'Galway City', 'Galway', 'A65F4E2', '+353612345678', 'not.sophia.loren@example.com', 'A'),
+(1, 'Marco', 'Rossi', '1966-06-23', 'Tenth Street', 'Limerick City', 'Limerick', 'A65F4E1', '+353687654321', 'marcorossin1@example.com', 'A'),
+(2, 'Luigi', 'Bros', '1986-09-06', 'Bros Street', 'Shannon', 'Clare', 'A65F4E3', '+353611223344', 'luigibros@example.com', 'A'),
+(3, 'Mario', 'Bros', '1956-02-25', 'Clare Street', 'Kilrush', 'Clare', 'A65F4E7', '+353611113333', 'mariobros1@example.com', 'A'),
+(4, 'Steven', 'Universe', '2009-04-22', 'Cork Street', 'Shannon', 'Clare', 'A65F4E4', '+353212345678', 'steven.universe@example.com', 'A'),
+(5, 'Emma', 'Smith', '1978-03-10', 'Main Street', 'Galway City', 'Galway', 'A65F4E8', '+353619876543', 'emma.smith@example.com', 'A'),
+(6, 'John', 'Doe', '1985-08-05', 'High Street', 'Limerick City', 'Limerick', 'A65F4E9', '+353614321098', 'john.doe@example.com', 'A'),
+(7, 'Sarah', 'Johnson', '1990-11-20', 'Oak Avenue', 'Galway City', 'Galway', 'A65F4E1', '+353615678901', 'sarah.johnson@example.com', 'A'),
+(8, 'Michael', 'Brown', '1980-09-15', 'Pine Road', 'Limerick City', 'Limerick', 'A65F4E7', '+353611234567', 'michael.brown@example.com', 'A'),
+(9, 'Emily', 'Taylor', '1995-04-02', 'Cedar Lane', 'Kilrush', 'Clare', 'A65F4E4', '+353617890123', 'emily.taylor@example.com', 'A');
 
----------------------------------------------------
--- Create Genres Table
----------------------------------------------------
+-- CREATE GENRES TABLE AND INSERT DATA
 CREATE TABLE Genres (
-    GenreCode CHAR(3),
-    Description VARCHAR(20) NOT NULL,
-    CONSTRAINT pk_GenreCode PRIMARY KEY(GenreCode)
+    GenreCode CHAR(3),
+    Description VARCHAR(20) NOT NULL,
+    CONSTRAINT pk_GenreCode PRIMARY KEY(GenreCode)
 );
 
--- Insert into Genres table
-INSERT INTO Genres VALUES ('ADV', 'Adventure');
-INSERT INTO Genres VALUES ('ADF', 'Adventure Fiction');
-INSERT INTO Genres VALUES ('AUT', 'Autobiography');
-INSERT INTO Genres VALUES ('BIO', 'Biography');
-INSERT INTO Genres VALUES ('BIF', 'Biographical Fiction');
-INSERT INTO Genres VALUES ('CLA', 'Classic');
-INSERT INTO Genres VALUES ('CRI', 'Crime');
-INSERT INTO Genres VALUES ('FAN', 'Fantasy');
-INSERT INTO Genres VALUES ('FIC', 'Fiction');
-INSERT INTO Genres VALUES ('GOF', 'Gothic Fiction');
-INSERT INTO Genres VALUES ('HIF', 'Historical Fiction');
-INSERT INTO Genres VALUES ('HOR', 'Horror');
-INSERT INTO Genres VALUES ('MYS', 'Mystery');
-INSERT INTO Genres VALUES ('MUR', 'Murder Mystery');
-INSERT INTO Genres VALUES ('NFI', 'Non-Fiction');
-INSERT INTO Genres VALUES ('NOV', 'Novel');
-INSERT INTO Genres VALUES ('PHI', 'Philosophy');
-INSERT INTO Genres VALUES ('ROM', 'Romance');
-INSERT INTO Genres VALUES ('SCI', 'Science');
-INSERT INTO Genres VALUES ('THI', 'Thriller');
+INSERT INTO Genres (GenreCode, Description) VALUES ('ADV', 'Adventure');
+INSERT INTO Genres (GenreCode, Description) VALUES ('ADF', 'Adventure Fiction');
+INSERT INTO Genres (GenreCode, Description) VALUES ('AUT', 'Autobiography');
+INSERT INTO Genres (GenreCode, Description) VALUES ('BIO', 'Biography');
+INSERT INTO Genres (GenreCode, Description) VALUES ('BIF', 'Biographical Fiction');
+INSERT INTO Genres (GenreCode, Description) VALUES ('CLA', 'Classic');
+INSERT INTO Genres (GenreCode, Description) VALUES ('CRI', 'Crime');
+INSERT INTO Genres (GenreCode, Description) VALUES ('FAN', 'Fantasy');
+INSERT INTO Genres (GenreCode, Description) VALUES ('FIC', 'Fiction');
+INSERT INTO Genres (GenreCode, Description) VALUES ('GOF', 'Gothic Fiction');
+INSERT INTO Genres (GenreCode, Description) VALUES ('HIF', 'Historical Fiction');
+INSERT INTO Genres (GenreCode, Description) VALUES ('HOR', 'Horror');
+INSERT INTO Genres (GenreCode, Description) VALUES ('MYS', 'Mystery');
+INSERT INTO Genres (GenreCode, Description) VALUES ('MUR', 'Murder Mystery');
+INSERT INTO Genres (GenreCode, Description) VALUES ('NFI', 'Non-Fiction');
+INSERT INTO Genres (GenreCode, Description) VALUES ('NOV', 'Novel');
+INSERT INTO Genres (GenreCode, Description) VALUES ('PHI', 'Philosophy');
+INSERT INTO Genres (GenreCode, Description) VALUES ('ROM', 'Romance');
+INSERT INTO Genres (GenreCode, Description) VALUES ('SCI', 'Science');
+INSERT INTO Genres (GenreCode, Description) VALUES ('THI', 'Thriller');
 
----------------------------------------------------
--- Create Books Table
----------------------------------------------------
+-- CREATE BOOKS TABLE AND INSERT DATA
 CREATE TABLE Books (
-    BookID INT PRIMARY KEY,
-    ISBN VARCHAR(13) NOT NULL,
-    Title VARCHAR(80) NOT NULL,
-    Author VARCHAR(35) NOT NULL,
-    Genre CHAR(3) NOT NULL,
-    Pubblication DATE NOT NULL,
-    Description VARCHAR(300) NOT NULL,
-    Status CHAR(1) DEFAULT 'A' CHECK (Status IN ('A', 'U')) NOT NULL,
-    CONSTRAINT fk_GenreCode FOREIGN KEY (Genre) REFERENCES Genres(GenreCode)
+    BookID INT PRIMARY KEY,
+    ISBN VARCHAR(13) NOT NULL,
+    Title VARCHAR(80) NOT NULL,
+    Author VARCHAR(35) NOT NULL,
+    Genre CHAR(3) NOT NULL,
+    Publication DATE NOT NULL,
+    Description VARCHAR(300) NOT NULL,
+    Status CHAR(1) DEFAULT 'A' CHECK (Status IN ('A', 'U')) NOT NULL,
+    CONSTRAINT fk_GenreCode FOREIGN KEY (Genre) REFERENCES Genres(GenreCode)
 );
 
--- Insert Books
-INSERT INTO Books (BookID, ISBN, Title, Author, Genre, Pubblication, Description, Status)
+INSERT INTO Books (BookID, ISBN, Title, Author, Genre, Publication, Description, Status)
 VALUES
 (0, '812911612X', 'Animal Farm', 'George Orwell', 'NOV', '1945-08-17', 'A group of animals rebel against humans and face new tyranny.', 'A'),
 (1, '1368051472', 'Percy Jackson And The Olympians: The Lightning Thief', 'Rick Riordan', 'FIC', '2005-06-28', 'A boy discovers he is Poseidon’s son and goes on a heroic quest.', 'A'),
@@ -137,16 +133,13 @@ VALUES
 (8, '8809792688', 'Mystery Tales', 'Edgar Allan Poe', 'MYS', '1908-01-01', 'A collection of Poe’s suspenseful tales.', 'A'),
 (9, '8862562586', 'The Wide Window', 'Daniel Handler', 'GOF', '2000-02-25', 'The Baudelaire orphans face a fearful guardian.', 'A');
 
----------------------------------------------------
--- Create Loans Table
----------------------------------------------------
+-- CREATE LOANS TABLE AND INSERT DATA
 CREATE TABLE Loans (
-    LoanId INT PRIMARY KEY,
-    MemberId INT NOT NULL,
-    FOREIGN KEY (MemberId) REFERENCES Members(MemberID)
+    LoanId INT PRIMARY KEY,
+    MemberId INT NOT NULL,
+    FOREIGN KEY (MemberId) REFERENCES Members(MemberID)
 );
 
--- Insert Loans
 INSERT INTO Loans (LoanId, MemberId) VALUES
 (0, 0),
 (1, 1),
@@ -154,22 +147,19 @@ INSERT INTO Loans (LoanId, MemberId) VALUES
 (3, 3),
 (4, 4);
 
----------------------------------------------------
--- Create LoanItems Table
----------------------------------------------------
+-- CREATE LOANITEMS TABLE AND INSERT DATA
 CREATE TABLE LoanItems (
-    BookID INT NOT NULL,
-    LoanID INT NOT NULL,
-    LoanStart DATE NOT NULL,
-    LoanEnd DATE NOT NULL,
-    RuternDate DATE,
-    Status CHAR(1) CHECK (Status IN ('O', 'L')) NOT NULL,
-    PRIMARY KEY (LoanID, BookID),
-    FOREIGN KEY (LoanID) REFERENCES Loans(LoanId),
-    FOREIGN KEY (BookID) REFERENCES Books(BookID)
+    BookID INT NOT NULL,
+    LoanID INT NOT NULL,
+    LoanStart DATE NOT NULL,
+    LoanEnd DATE NOT NULL,
+    RuternDate DATE,
+    Status CHAR(1) CHECK (Status IN ('O', 'L')) NOT NULL,
+    PRIMARY KEY (LoanID, BookID),
+    FOREIGN KEY (LoanID) REFERENCES Loans(LoanId),
+    FOREIGN KEY (BookID) REFERENCES Books(BookID)
 );
 
--- Insert LoanItems
 INSERT INTO LoanItems (LoanID, BookID, LoanStart, LoanEnd, RuternDate, Status)
 VALUES
 (0, 0, '2023-01-01', '2023-01-31', '2023-01-29', 'O'),

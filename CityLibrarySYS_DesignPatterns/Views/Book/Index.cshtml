@@ -1,33 +1,29 @@
 ﻿@model IEnumerable<CityLibrarySYS_DesignPatterns.Models.Book>
 
-<h2>My Books</h2>
+<h2>Books</h2>
 
-<div class="container">
-    <table>
-        <thead>
-            <tr>BookID</tr>
-            <tr>ISBN</tr>
-            <tr>Title</tr>
-            <tr>Author</tr>
-            <tr>Genre</tr>
-            <tr>Pubblication</tr>
-            <tr>Description</tr>
-            <tr>Status</tr>
-        </thead>
-        <tbody>
-            @foreach(var item in Model)
-            {
-                <tr>
-                    <td>@item.BookID</td>
-                    <td>@item.ISBN</td>
-                    <td>@item.Title</td>
-                    <td>@item.Author</td>
-                    <td>@item.Genre</td>
-                    <td>@item.Pubblication.ToString("yyyy-MM-dd")</td>
-                    <td>@item.Description</td>
-                    <td>@item.Status</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ISBN</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Publication</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.ISBN</td>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Genre</td>
+                <td>@book.Publication.ToShortDateString()</td>
+                <td>@book.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

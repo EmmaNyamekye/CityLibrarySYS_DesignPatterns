@@ -2,9 +2,12 @@
 
 namespace CityLibrarySYS_DesignPatterns.Data.Services
 {
-    public interface IBooksService
+    public interface IBookService
     {
-        Task<IEnumerable<Book>> GetAll();
-        Task Add(Book book);
+        Task AddBook(Book book);
+        Task<IEnumerable<Book>> GetAllBooks();
+        Task<Book?> GetBookById(int id);
+        Task UpdateBook(int id, Book newBook);
+        Task DeleteBook(int id);
     }
 }

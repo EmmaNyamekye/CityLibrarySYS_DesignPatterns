@@ -1,16 +1,18 @@
 using Microsoft.EntityFrameworkCore;
-using CityLibrarySYS_DesignPatterns.Data; 
-
+using CityLibrarySYS_DesignPatterns.Data;
+using CityLibrarySYS_DesignPatterns.Data.Services;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddDbContext<LibraryDatabaseContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -20,8 +22,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
-
-// Your existing static assets setup
 app.MapStaticAssets();
 
 app.MapControllerRoute(

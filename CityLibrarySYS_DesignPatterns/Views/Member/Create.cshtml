@@ -1,0 +1,83 @@
+﻿@model CityLibrarySYS_DesignPatterns.Models.Member
+
+@{
+    ViewData["Title"] = "Register New Member";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="text-center">Register New Library Member</h1>
+        <hr />
+
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label asp-for="Forename" class="control-label"></label>
+                    <input asp-for="Forename" class="form-control" />
+                    <span asp-validation-for="Forename" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="Surname" class="control-label"></label>
+                    <input asp-for="Surname" class="form-control" />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <label asp-for="DoB" class="control-label"></label>
+                <input asp-for="DoB" type="date" class="form-control" />
+                <span asp-validation-for="DoB" class="text-danger"></span>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-4 form-group">
+                    <label asp-for="Street" class="control-label"></label>
+                    <input asp-for="Street" class="form-control" />
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label asp-for="Town" class="control-label"></label>
+                    <input asp-for="Town" class="form-control" />
+                    <span asp-validation-for="Town" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label asp-for="CountyCode" class="control-label">County Code</label>
+                    <input asp-for="CountyCode" class="form-control" />
+                    <span asp-validation-for="CountyCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <label asp-for="Eircode" class="control-label"></label>
+                <input asp-for="Eircode" class="form-control" />
+                <span asp-validation-for="Eircode" class="text-danger"></span>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6 form-group">
+                    <label asp-for="Phone" class="control-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mt-4">
+                <input type="submit" value="Register" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
