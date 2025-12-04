@@ -32,6 +32,6 @@ namespace CityLibrarySYS_DesignPatterns.Models
 
         [Required]
         [StringLength(1)]
-        public string Status { get; set; } = "A"; // A = Active, I = Inactive
+        public char Status { get; set; } = 'A'; // A = Active, I = Inactive
     }
 }

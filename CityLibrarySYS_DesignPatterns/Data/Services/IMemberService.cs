@@ -1,18 +1,18 @@
-﻿using CityLibrarySYS_DesignPatterns.Models;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace CityLibrarySYS_DesignPatterns.Data.Services
 {
     public interface IMemberService
     {
-        Task AddMember(Member member);
+        // 1. Core Status Check Logic for Pre-Loan Validation:
+        // Checks the current status based on the history table. 
+        // If the inactive period has expired, it clears the status to 'A' and returns true.
+        // Returns (canBorrow, message).
+        Task<(bool CanBorrow, string Message)> CheckAndClearInactiveStatus(int memberId);
 
-        Task<IEnumerable<Member>> GetAllMembers();
-        Task<Member?> GetMemberById(int id);
-
-        Task UpdateMember(int id, Member newMemberData);
-
-        Task DeleteMember(int id);
-
-        Task UpdateMemberStatus(int id, string status, int daysInactive = 0);
+        // 2. Core Status Update Logic for Observer Pattern:
+        // Creates a new MemberStatus record to log the status change.
+        Task UpdateMemberStatus(int memberId, char newStatus, DateTime inactiveUntil, string reason);
     }
 }

@@ -1,5 +1,8 @@
 ﻿using CityLibrarySYS_DesignPatterns.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CityLibrarySYS_DesignPatterns.Data.Services
 {
@@ -12,58 +15,67 @@ namespace CityLibrarySYS_DesignPatterns.Data.Services
             _context = context;
         }
 
-        public async Task AddMember(Member member)
+        public async Task<Member?> GetMemberById(int memberId)
         {
-            member.Status = "A";
-
-            _context.Members.Add(member);
-            await _context.SaveChangesAsync();
+            // Includes the most recent status record for easy access
+            return await _context.Members
+                // Includes the status history collection
+                .Include(m => m.Statuses)
+                .FirstOrDefaultAsync(m => m.MemberId == memberId);
         }
 
-        public async Task<IEnumerable<Member>> GetAllMembers()
+        // Implementation of IMemberService.CheckAndClearInactiveStatus
+        public async Task<(bool CanBorrow, string Message)> CheckAndClearInactiveStatus(int memberId)
         {
-            return await _context.Members.OrderBy(m => m.Surname).ToListAsync();
+            var member = await GetMemberById(memberId);
+            if (member == null) return (false, "Member not found.");
+
+            // Get the most recent status record from the history
+            var currentStatus = member.Statuses?.OrderByDescending(s => s.DateAssigned).FirstOrDefault();
+
+            // If the member has no status history, they are considered 'Active'
+            if (currentStatus == null || currentStatus.Status == 'A')
+            {
+                return (true, "Member status is Active. Loan can proceed.");
+            }
+
+            // Check if the current status is Inactive ('I')
+            if (currentStatus.Status == 'I')
+            {
+                // Check if the inactive period has passed
+                if (currentStatus.InactiveUntil <= DateTime.Now)
+                {
+                    // Status has expired, change member status back to Active ('A')
+                    // Note: We use DateTime.MinValue as the inactiveUntil date for an 'Active' status
+                    await UpdateMemberStatus(memberId, 'A', DateTime.MinValue, "Inactive period expired and status reset.");
+                    return (true, "Inactive status cleared. Loan can proceed.");
+                }
+                else
+                {
+                    // Status is still active, deny the loan
+                    var remainingDays = Math.Ceiling((currentStatus.InactiveUntil - DateTime.Now).TotalDays);
+                    return (false, $"Loan denied: Member is inactive until {currentStatus.InactiveUntil.ToShortDateString()}. Remaining: {remainingDays} days.");
+                }
+            }
+
+            // Default safe return, should be unreachable if logic is clean
+            return (true, "Member status is Active. Loan can proceed.");
         }
 
-        public async Task<Member?> GetMemberById(int id)
+        // Implementation of IMemberService.UpdateMemberStatus (Used by Observer)
+        public async Task UpdateMemberStatus(int memberId, char newStatus, DateTime inactiveUntil, string reason)
         {
-            return await _context.Members.FirstOrDefaultAsync(m => m.MemberID == id);
-        }
+            // Create a new status record in the history table
+            var newStatusRecord = new MemberStatus
+            {
+                MemberId = memberId,
+                Status = newStatus,
+                DateAssigned = DateTime.Now,
+                InactiveUntil = inactiveUntil,
+                Reason = reason
+            };
 
-        public async Task UpdateMember(int id, Member newMemberData)
-        {
-            var existingMember = await GetMemberById(id);
-            if (existingMember == null) return;
-
-            existingMember.Forename = newMemberData.Forename;
-            existingMember.Surname = newMemberData.Surname;
-            existingMember.DoB = newMemberData.DoB;
-            existingMember.Street = newMemberData.Street;
-            existingMember.Town = newMemberData.Town;
-            existingMember.CountyCode = newMemberData.CountyCode;
-            existingMember.Eircode = newMemberData.Eircode;
-            existingMember.Phone = newMemberData.Phone;
-            existingMember.Email = newMemberData.Email;
-
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteMember(int id)
-        {
-            var memberToDelete = await GetMemberById(id); 
-            if (memberToDelete == null) return;
-
-            _context.Members.Remove(memberToDelete);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateMemberStatus(int id, string status, int daysInactive = 0)
-        {
-            var member = await GetMemberById(id); 
-            if (member == null) return;
-
-            member.Status = status;
-
+            await _context.MemberStatuses.AddAsync(newStatusRecord);
             await _context.SaveChangesAsync();
         }
     }

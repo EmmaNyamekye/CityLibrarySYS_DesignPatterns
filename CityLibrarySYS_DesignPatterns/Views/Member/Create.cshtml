@@ -14,35 +14,41 @@
 
             <div class="row">
                 <div class="col-md-6 form-group">
-                    <label asp-for="Forename" class="control-label"></label>
-                    <input asp-for="Forename" class="form-control" />
-                    <span asp-validation-for="Forename" class="text-danger"></span>
+                    @* FIX: Changed Forename to FirstName *@
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="col-md-6 form-group">
-                    <label asp-for="Surname" class="control-label"></label>
-                    <input asp-for="Surname" class="form-control" />
-                    <span asp-validation-for="Surname" class="text-danger"></span>
+                    @* FIX: Changed Surname to LastName *@
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="form-group mt-3">
-                <label asp-for="DoB" class="control-label"></label>
-                <input asp-for="DoB" type="date" class="form-control" />
-                <span asp-validation-for="DoB" class="text-danger"></span>
+                @* FIX: Changed DoB to DateOfBirth *@
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
 
             <div class="row mt-3">
                 <div class="col-md-4 form-group">
+                    @* Street is now defined in Member.cs *@
                     <label asp-for="Street" class="control-label"></label>
                     <input asp-for="Street" class="form-control" />
                     <span asp-validation-for="Street" class="text-danger"></span>
                 </div>
                 <div class="col-md-4 form-group">
+                    @* Town is now defined in Member.cs *@
                     <label asp-for="Town" class="control-label"></label>
                     <input asp-for="Town" class="form-control" />
                     <span asp-validation-for="Town" class="text-danger"></span>
                 </div>
                 <div class="col-md-4 form-group">
+                    @* CountyCode is now defined in Member.cs *@
                     <label asp-for="CountyCode" class="control-label">County Code</label>
                     <input asp-for="CountyCode" class="form-control" />
                     <span asp-validation-for="CountyCode" class="text-danger"></span>
@@ -50,6 +56,7 @@
             </div>
 
             <div class="form-group mt-3">
+                @* Eircode is now defined in Member.cs *@
                 <label asp-for="Eircode" class="control-label"></label>
                 <input asp-for="Eircode" class="form-control" />
                 <span asp-validation-for="Eircode" class="text-danger"></span>
@@ -57,11 +64,13 @@
 
             <div class="row mt-3">
                 <div class="col-md-6 form-group">
+                    @* Phone is now defined in Member.cs *@
                     <label asp-for="Phone" class="control-label"></label>
                     <input asp-for="Phone" class="form-control" />
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
                 <div class="col-md-6 form-group">
+                    @* Email is correct *@
                     <label asp-for="Email" class="control-label"></label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>

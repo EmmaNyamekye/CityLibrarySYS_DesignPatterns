@@ -1,0 +1,38 @@
+using CityLibrarySYS_DesignPatterns.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace CityLibrarySYS_DesignPatterns.ViewModels
+{
+    public class LoanViewModel
+    {
+        // --- Member Validation & Context ---
+
+        [Display(Name = "Member ID")]
+        [Required(ErrorMessage = "Please enter the Member ID.")]
+        public int? MemberIdInput { get; set; }
+
+        public Member? MemberDetails { get; set; }
+
+        // Placeholder for the next sequential Loan ID (for display purposes)
+        public int NextLoanId { get; set; }
+
+
+        // --- Book Search ---
+
+        [Display(Name = "Book Title/Author")]
+        [Required(ErrorMessage = "Please enter a search term.")]
+        public string TitleSearch { get; set; } = string.Empty;
+
+        public IEnumerable<Book>
+    AvailableBooks { get; set; } = new List<Book>
+        ();
+
+
+        // --- Loan Cart (Session Data) ---
+        // Stores the books selected for the current loan transaction
+        public List<Book>
+            LoanCart { get; set; } = new List<Book>
+                ();
+                }
+                }

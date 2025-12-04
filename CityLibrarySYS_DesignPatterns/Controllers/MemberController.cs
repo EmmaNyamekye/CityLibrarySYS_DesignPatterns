@@ -52,7 +52,7 @@ namespace CityLibrarySYS_DesignPatterns.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [Bind("MemberID,Forename,Surname,DoB,Street,Town,CountyCode,Eircode,Phone,Email,Status")] Member member)
         {
-            if (id != member.MemberID)
+            if (id != member.MemberId)
             {
                 return View("NotFound");
             }
@@ -79,7 +79,6 @@ namespace CityLibrarySYS_DesignPatterns.Controllers
             var memberDetails = await _service.GetMemberById(id);
             if (memberDetails == null) return View("NotFound");
 
-            await _service.DeleteMember(id);
             return RedirectToAction(nameof(Index));
         }
     }

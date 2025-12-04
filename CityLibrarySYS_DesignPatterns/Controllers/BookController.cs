@@ -77,7 +77,6 @@ namespace CityLibrarySYS_DesignPatterns.Controllers
             var bookDetails = await _service.GetBookById(id);
             if (bookDetails == null) return View("NotFound");
 
-            await _service.DeleteBook(id);
             return RedirectToAction(nameof(Index));
         }
     }
